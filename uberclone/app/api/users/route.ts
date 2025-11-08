@@ -6,6 +6,9 @@ import { eq } from 'drizzle-orm';
 
 export async function POST() {
   try {
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+    }
     const { userId } = await auth();
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
